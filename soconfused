@@ -1,0 +1,53 @@
+def factoreven(n): #n = number to be factored, prod = array with powers of 2
+	if n%2==1:
+		return []
+	a = 0;
+	while(n%2==0):
+		a += 1;
+		n /= 2; #ask catherine for the cool trick to divide by 2
+	return [2,a]
+
+def factorodd(n,p,prod): #n = odd number to be factored, p = prime last checked (>2)
+                      #prod = array containing prime factorization
+	if p>n:
+		return prod
+	while(p<=n):
+		if n%p==0:
+			a = 0;
+			while(n%p==0):
+				a += 1;
+				n /= p; #find the max power of p that divides n
+			prod.append([p,a]);
+			return factorodd(n,p+2,prod)
+		p += 2;
+	return prod
+
+
+
+def Factor(n): #making it more user friendly
+	f = factoreven(n);
+	if len(f)==0:
+		return factorodd(n,3,[])
+	return factorodd(n/(2**f[1]),3,[f])
+
+def printfactorization(n): #making nice to read for a human
+	s = ''
+	for f in Factor(n):
+		s += str(f[0])+'^'+str(f[1])+' '
+	print 'The factorization of', n,'is:'
+	print s
+
+
+def main(): #this is to do stuff
+	printfactorization(256) #test case with a power of 2
+	printfactorization(729) #test case with a power of 3
+	printfactorization(2014)
+	printfactorization(2**32+1) #test case with a really cool fermat number, which does not work in C
+	printfactorization(600851475143)
+	printfactorization(317584931803)
+	#printfactorization(2478392573895723293875238592378295237231) #too large for my naive algorithm
+	
+	
+
+if __name__ == '__main__': #don't touch this
+    main()
